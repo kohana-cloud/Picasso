@@ -1,0 +1,6 @@
+version: '0.1b'
+
+images:
+  hello-kohana:
+    build: ../images/hello-kohana/
+    #image: localhost:5000/hello-kohana
