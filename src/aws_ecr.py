@@ -9,11 +9,12 @@ class AWS_ECR():
 		print("AWS_ECR[AWS_Session({%s})] bound in region({%s})" % (self.session.profile_name, self.session.region_name))
 
 	"""
-	Description: These functions aws_ecs_{create,start,stop,destroy} are used to build start stop and destroy ECS instances in AWS via python function calls.
-
+	Description: Description: These functions aws_ecr_{add,delete,update} are used to add, remove and update container images in the elastic container repository.
+	 This allows us to deploy the honeypot images for later deployment of the containers themselves with the ECS functions.
 	Parameters:
-	- instance_identifier: this is a uuid that represents the instance, i would like to make it a 12-15 digit alphanumeric value, but if you have constraints let me know
-	- image_uri: this is a string that points to the ECR URI where we are storing the honeypot docker images
+	- repo_name: The name of the repository that is associated with the image layers to check.
+	- image_tag: this is a string that represents the image in AWS, its effectively the docker image label.
+	- local_image_name: Docker image local file
 
 	Return:
 	- response_status: boolean status indicator of success/failure. An integer would be acceptable as well if the response is not discrete.
