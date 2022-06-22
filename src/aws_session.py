@@ -115,26 +115,3 @@ class AWS_Session():
 	def get_all_buckets(self):
 		s3 = self.session.resource('s3')
 		return s3.buckets.all()
-	"""
-	TODO: these parameters will be moved to a seperate class in the future
-	Parameters:
-	- instance_identifier: this is a uuid that represents the instance, i would like to make it a 12-15 digit alphanumeric value, but if you have constraints let me know
-	- image_uri: this is a string that points to the ECR URI where we are storing the honeypot docker images
-	"""	
-	def aws_ecs_create(self, instance_identifier:str, image_uri:str):
-		#TODO
-		return True
-
-	def aws_ecs_start(self, instance_identifier:str, image_uri:str):
-		#TODO
-		return True	
-
-	def aws_ecs_stop(self, instance_identifier:str, image_uri:str):
-		#TODO
-		return True	
-
-	def aws_ecs_destroy(self, instance_identifier:str, image_uri:str):
-		#TODO
-		return True	
-
-
