@@ -1,0 +1,14 @@
+[Unit]
+Description=HP monitor
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/opt/src/monitor.py alive
+ExecStop=/opt/src/monitor.py dead
+
+[Install]
+WantedBy=multi-user.target
