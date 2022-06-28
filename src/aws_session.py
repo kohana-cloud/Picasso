@@ -1,7 +1,6 @@
 import boto3
 import os
 import base64
-import docker
 from botocore.config import Config
 from .aws_query import AWS_LIST_RESOURCE_QUERIES, run_raw_operation
 
@@ -116,55 +115,3 @@ class AWS_Session():
 	def get_all_buckets(self):
 		s3 = self.session.resource('s3')
 		return s3.buckets.all()
-
-	def aws_ecr_add(self, repo_name, image_name):
-		client = self.session.client('ecr')
-		all_repos = self.aws_ecr_list_repo()
-		ecr_repo = next((x for x in all_repos if x['repositoryName'] == repo_name), None)
-
-		if not ecr_repo:
-			ecr_repo = client.create_repository(
-				repositoryName=repo_name, encryptionConfiguration={"encryptionType": "KMS"}
-			)["repository"]
-			print("AWS_Session({%s}): created repo %s" % (self.session.profile_name, ecr_repo['repositoryUri']))
-		
-
-		# get local docker client
-		docker_client = docker.from_env()
-		#build/tag image here....
-		LOCAL_REPOSITORY = repo_name
-		image, build_log = docker_client.images.build(path=("./images/{}".format(image_name)), tag=LOCAL_REPOSITORY, rm=True)
-		# then override the docker client config by passing auth_config
-		# pass an auth_config with username/password when pushing the image to ECR.
-		ecr_credentials = (
-			client
-			.get_authorization_token()
-			['authorizationData'][0])
-		ecr_username = 'AWS'
-		ecr_password = (
-			base64.b64decode(ecr_credentials['authorizationToken'])
-			.replace(b'AWS:', b'')
-			.decode('utf-8'))
-		ecr_url = ecr_credentials['proxyEndpoint']
-		# get Docker to login/authenticate with ECR
-		docker_client.login(
-        	username=ecr_username, password=ecr_password, registry=ecr_url)
-		# tag image for AWS ECR
-		ecr_repo_name = '{}/{}'.format(
-			ecr_url.replace('https://', ''), LOCAL_REPOSITORY)
-		image.tag(ecr_repo_name, tag='latest')
-
-		# push image to AWS ECR
-		push_log = docker_client.images.push(ecr_repo_name, tag='latest')
-		print(push_log)
-	
-
-		return True
-
-	def aws_ecr_list_repo(self):
-		client = self.session.client('ecr')
-		resp = client.describe_repositories()['repositories']
-		return resp
-		
-
-
