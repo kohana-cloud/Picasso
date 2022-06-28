@@ -55,7 +55,12 @@ class AWS_ECR():
 			ecr_repo = client.create_repository(
 				repositoryName=repo_name, encryptionConfiguration={"encryptionType": "KMS"}
 			)["repository"]
-			print("AWS_Session({%s}): created repo %s" % (self.session.profile_name, ecr_repo['repositoryUri']))
+			if 'repositoryUri' in ecr_repo:
+				print("AWS_Session({%s}): created repo %s" % (self.session.profile_name, ecr_repo['repositoryUri']))
+			else:
+				print("AWS_Session({%s}): error creating repo %s " % (self.session.profile_name, repo_name))
+				return False
+
 		
 
 		# get local docker client
@@ -93,5 +98,6 @@ class AWS_ECR():
 	def aws_ecr_list_repo(self):
 		client = self.session.client('ecr')
 		resp = client.describe_repositories()['repositories']
+		print(resp)
 		return resp
 		
