@@ -271,6 +271,7 @@ class AWS_ECS():
 	def aws_ecs_delete_cluster(self, cluster_name:str):
 		client = self.session.client('ecs')
 		resp = client.delete_cluster(cluster=cluster_name)
+		#TODO Delete the associated EC2
 		if resp and resp["cluster"]["clusterName"]:
 			print("AWS_ECS[AWS_Session({%s})]: deleted cluster %s" % (self.session.profile_name, cluster_name))
 			return True
