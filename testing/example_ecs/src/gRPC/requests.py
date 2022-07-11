@@ -3,11 +3,7 @@ import gRPC.proto.query_pb2 as chat
 import threading
 import grpc
 
-<<<<<<< HEAD
 SERVER_HOST = "127.0.0.1"
-=======
-SERVER_HOST = "192.168.1.44"
->>>>>>> d48894d92dd1a4084809fab7969dc1e5991931f9
 SERVER_PORT = 15002
 
 class Client:
