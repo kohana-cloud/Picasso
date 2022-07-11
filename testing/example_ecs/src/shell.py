@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 from gRPC.requests import Client
-from datetime import datetime
-import requests
 import os
 
 from subprocess import Popen, PIPE
@@ -34,7 +32,7 @@ def spawn_shell():
 
 if __name__ == '__main__':
     # start a client (distinct thread) which keeps connection to server open
-    c = Client()
+    c = Client(tls=False)
 
     hpid = "859a277c-f3ff-11ec-a661-000c2970a8e4"
     src_address = "1.2.3.4"
