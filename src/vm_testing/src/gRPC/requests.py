@@ -6,7 +6,7 @@ import grpc
 import uuid
 import time
 
-SERVER_HOST = "192.168.1.44"
+SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 15002
 
 class Client:

@@ -6,11 +6,11 @@ import grpc
 import uuid
 import time
 
-SERVER_HOST = "localhost"
+SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 15002
 
 class Client:
-    def __init__(self, tls=True):
+    def __init__(self, tls=False):
         if tls:
             with open('gRPC/cert/server.crt', 'rb') as fio:
                 tls_secret = grpc.ssl_channel_credentials(fio.read())

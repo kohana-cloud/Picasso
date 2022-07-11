@@ -4,15 +4,17 @@ from datetime import datetime
 import requests
 import os
 import sys
+import time
 
 if __name__=='__main__':
     #placeholder honeypot ID
-    hpid = "1a463804ea"
+    hpid = "859a277c-f3ff-11ec-a661-000c2970a8e4"
 
     #create the client object for connection
     c = Client(tls=False)
 
-    c.send_message(type="status", message=f"{sys.argv[1]}:{hpid}")
-    while True: pass
+    while True:
+        time.sleep(1)
+        c.send_message(type="status", message=f"alive:{hpid}")
 
 
