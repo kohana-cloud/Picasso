@@ -3,7 +3,7 @@ import gRPC.proto.query_pb2 as chat
 import threading
 import grpc
 
-SERVER_HOST = "0.0.0.0"
+SERVER_HOST = "maestro.intranet.kohana.cloud"
 SERVER_PORT = 15002
 
 class Client:
