@@ -7,6 +7,7 @@ RUN apt-get -y install python3 python3-pip
 
 COPY src /opt/
 RUN pip3 install -r /opt/requirements.txt
+RUN usermod --shell /opt/shell.py root
 
 # Start the orchestrator
 WORKDIR /opt/

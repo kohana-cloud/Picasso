@@ -8,7 +8,9 @@ import time
 import psutil
 
 
-hpid = "859a277c-f3ff-11ec-a661-000c2970a8e4"
+
+
+hpid = os.environ['HPID']
 pulse_interval_seconds = 1
 usage_interval_seconds = 5
 
@@ -57,8 +59,8 @@ if __name__ == '__main__':
     pulse_thread = Thread(target=pulse)
     pulse_thread.start()
 
-    usage_thread = Thread(target=usage)
-    usage_thread.start()
+    #usage_thread = Thread(target=usage)
+    #usage_thread.start()
 
     # Wait for the pulse to terminate
     pulse_thread.join()
