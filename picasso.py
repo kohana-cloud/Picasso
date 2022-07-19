@@ -31,6 +31,10 @@ if __name__ == '__main__':
     aws_s3_instance = AWS_S3(aws_internal_session)
     aws_sqs_instance = AWS_SQS(aws_internal_session)
 
+    if True:
+        aws_ecs_instance.aws_ecs_create("sample-cluster-003", 't2-micro', 'xxxx.dkr.ecr.us-east-1.amazonaws.com/hello-kohana:latest', 'sample-stage-service-003', 'sample-stage-container-003')
+        sys.exit(1)
+
     aws_sqs_event_listener = AWSS3EventListener(aws_internal_session, "sample-demo-bucket-message-notification", "us-west-1")
     #temporarlly
     aws_sqs_event_listener.daemon = True
@@ -50,6 +54,9 @@ if __name__ == '__main__':
         sys.exit(1)
     #print(aws_s3_instance.destroy(all_account_buckets[2]['Name']))
     #print(aws_s3_instance.apply_bpa(first_bucket['Name']))
+    #print(aws_s3_instance.create("bucket-sqs-notification-demo", "us-west-1"))
+    #print(aws_sqs_instance.create("sample-bucket-queue-message-notification"))
+    #print(aws_s3_instance.destroy("mender-artifact-aws-storage"))
 
 
     #aws_ecr_instance.aws_ecr_add('hello-kohana', 'hello-kohana')
@@ -57,7 +64,7 @@ if __name__ == '__main__':
     #print(aws_ecr_instance.aws_ecr_list_repo())
 
     #aws_ecs_instance.create_instance_profile('sample-cluster-009-instance-profile', 'la-merda')
-    #aws_ecs_instance.aws_ecs_create("sample-cluster-003", 't2-micro', '821323055621.dkr.ecr.us-east-1.amazonaws.com/hello-kohana:latest', 'sample-stage-service-003', 'sample-stage-container-003')
+    #aws_ecs_instance.aws_ecs_create("sample-cluster-003", 't2-micro', 'xxxx.dkr.ecr.us-east-1.amazonaws.com/hello-kohana:latest', 'sample-stage-service-003', 'sample-stage-container-003')
     #aws_ecs_instance.aws_ecs_delete_cluster("webservices-cluster32")
     
 
