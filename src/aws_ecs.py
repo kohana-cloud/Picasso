@@ -158,7 +158,7 @@ class AWS_ECS():
 				KeyName=cluster_name,
 				MinCount=1,
 				MaxCount=1,
-				InstanceType="t2.micro",
+				InstanceType=instance_identifier,
 				UserData="#!/bin/bash \n yum update -y \n echo ECS_CLUSTER=" + cluster_name + " >> /etc/ecs/ecs.config",
 				IamInstanceProfile={
 					'Arn': inst_profile_arn,
@@ -251,28 +251,59 @@ class AWS_ECS():
 
 		return True
 
+
 	def aws_ecs_start(self, instance_identifier:str, image_uri:str):
 		#TODO
 		return True	
 
+	#STOP TASK
 	def aws_ecs_stop(self, instance_identifier:str, image_uri:str):
 		#TODO
 		return True	
 
-	def aws_ecs_destroy(self, instance_identifier:str, image_uri:str):
-		#TODO
+	"""
+	Description: For each service in the cluster, this function destroy all container instances, terminate any attached EC2, then remove any defined service.
+	TODO: De-Register all task definitions
+	"""
+	def aws_ecs_destroy_cluster(self, instance_identifier:str):
+		client = self.session.client('ecs')
+		services = client.list_services(cluster=instance_identifier)
+		ci_list_response = client.list_container_instances(cluster=instance_identifier)
+		
+		
+		if len(ci_list_response['containerInstanceArns']):
+			ec2 = self.session.resource('ec2')
+			ec2_instances = set()
+
+			ci_descriptions_response = client.describe_container_instances(
+				cluster=instance_identifier,
+				containerInstances=ci_list_response['containerInstanceArns']
+			)
+			for ci in ci_descriptions_response['containerInstances']:
+				ec2_instances.add(ci['ec2InstanceId'])
+			
+			if len(ec2_instances):
+				ec2.instances.filter(InstanceIds = list(ec2_instances)).terminate()
+
+		for service in services['serviceArns']:
+			client.update_service(cluster=instance_identifier, service=service, desiredCount=0)
+			client.delete_service(cluster=instance_identifier, service=service)
 		return True
+	
 
 	def aws_ecs_list_clusters(self):
 		client = self.session.client('ecs')
 		resp = client.list_clusters()['clusterArns']
 		return resp
 
-	def aws_ecs_delete_cluster(self, cluster_name:str):
+	def aws_ecs_delete_cluster(self, instance_identifier:str):
 		client = self.session.client('ecs')
-		resp = client.delete_cluster(cluster=cluster_name)
-		#TODO Delete the associated EC2
-		if resp and resp["cluster"]["clusterName"]:
-			print("AWS_ECS[AWS_Session({%s})]: deleted cluster %s" % (self.session.profile_name, cluster_name))
-			return True
+
+		if not self.aws_ecs_destroy_cluster(instance_identifier):
+			return False
+
+		
+		client.delete_cluster(cluster=instance_identifier)
+		print("AWS_ECS[AWS_Session({%s})]: deleted cluster %s" % (self.session.profile_name, instance_identifier))
+		return True
 		return False
