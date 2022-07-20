@@ -1,0 +1,4 @@
+grpcio==1.46.3
+grpcio-tools==1.46.3
+requests==2.27.1
+psutil==5.9.1

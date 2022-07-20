@@ -1,0 +1,35 @@
+syntax = "proto3";
+package grpc;
+
+message Empty {}
+
+service QueryServer {
+    rpc GetHoneypots (Empty) returns (Honeypots);
+    rpc ControlHoneypot (HoneypotControlCommand) returns (ReturnCode);
+}
+
+message Honeypots {
+    string HoneypotsAsJSON = 1;
+    uint32 count = 2;
+}
+
+message Honeypot {
+    string HoneypotsAsJSON = 1;
+}
+
+message HoneypotControlCommand {
+    string message = 1;
+}
+
+message ReturnCode {
+    uint32 errorCode = 1;
+}
+
+service HoneypotManagementServer {
+    rpc SendEvent (Event) returns (Empty);
+}
+
+message Event {
+    string type = 1;
+    string message = 2;
+}
