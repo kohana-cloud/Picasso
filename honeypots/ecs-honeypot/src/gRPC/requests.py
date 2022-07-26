@@ -22,8 +22,9 @@ class Client:
 
     def __listen_for_responses(self):
         # This is a blocking thread, recieve message responses   
-        for event in self.connection.ChatStream(chat.Empty()):  
-            print(f"Response[{event.type}] {event.message}")
+        pass
+        #for event in self.connection.ChatStream(chat.Empty()):  
+        #    print(f"Response[{event.type}] {event.message}")
 
     def send_message(self, type:str, message:str):
         event = chat.Event(type=type,message=message)

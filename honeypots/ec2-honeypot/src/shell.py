@@ -40,38 +40,7 @@ if __name__ == '__main__':
     c.send_message(type="connection", message=f"connect:{hpid}:{src_address}")
 
 
-    shell_thread = Thread(target=spawn_shell)
-    shell_thread.start()
-
-    # Wait for the shell to terminate
-    shell_thread.join()
+    os.system('/binb/bash')
     
 
     c.send_message(type="connection", message=f"disconnect:{hpid}:{src_address}")
-
-
-"""
-import os
-import fcntl
-import subprocess
-p = subprocess.Popen(['./test5.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-fd = p.stdout.fileno()
-fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
-p.stdout.read()
-
-p.stdin.write(b'u')
-p.stdin.flush()
-
-p.stdout.read()
-
-p.stdin.write(b'u')
-p.stdin.flush()
-
-p.stdout.read()
-p.poll()
-
-p.stdin.write(b'q')
-p.stdin.flush()
-
-p.poll()"""

@@ -5,7 +5,7 @@ message Empty {}
 
 service QueryServer {
     rpc GetHoneypots (Empty) returns (Honeypots);
-    rpc NewHoneypot (StartHoneypot) returns (ReturnCode);
+    rpc ControlHoneypot (HoneypotControlCommand) returns (ReturnCode);
 }
 
 message Honeypots {
@@ -17,22 +17,19 @@ message Honeypot {
     string HoneypotsAsJSON = 1;
 }
 
-message StartHoneypot {
-    string type = 1;
+message HoneypotControlCommand {
+    string message = 1;
 }
 
 message ReturnCode {
     uint32 errorCode = 1;
 }
 
-
 service HoneypotManagementServer {
-    // This bi-directional stream makes it possible to send and receive Notes between 2 persons
-    rpc ChatStream (Empty) returns (stream Note);
-    rpc SendNote (Note) returns (Empty);
+    rpc SendEvent (Event) returns (Empty);
 }
 
-message Note {
+message Event {
     string type = 1;
     string message = 2;
 }
